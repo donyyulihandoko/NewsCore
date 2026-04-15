@@ -11,6 +11,8 @@ class DashboardController extends Controller
 
     public function index(): Response
     {
-        return response()->view('admin.dashboard');
+        return response()->view('admin.dashboard', [
+            'title' => 'Halaman Admin Dashboard'
+        ]);
     }
 }
