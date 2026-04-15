@@ -17,9 +17,9 @@ class CategoryServiceImpl implements CategoryService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getCategories(): LengthAwarePaginator
+    public function getCategoriesPagination(): LengthAwarePaginator
     {
-        return $this->categoryRepository->getCategories();
+        return $this->categoryRepository->getCategoriesPagination();
     }
 
     public function createCategory(array $data): Category
@@ -41,5 +41,10 @@ class CategoryServiceImpl implements CategoryService
         return DB::transaction(function () use ($category) {
             return $this->categoryRepository->removeCategory($category);
         });
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categoryRepository->getCategories();
     }
 }

@@ -25,10 +25,10 @@ class CategoryRepositoryTest extends TestCase
         self::assertNotNull($this->categoryRepository);
     }
 
-    public function test_get_categories()
+    public function test_get_categories_pagination()
     {
         Category::factory(20)->create();
-        $result = $this->categoryRepository->getCategories();
+        $result = $this->categoryRepository->getCategoriesPagination();
         $this->assertNotNull($result);
         $this->assertCount(10, $result);
         $this->assertEquals(20, $result->total());
@@ -95,5 +95,13 @@ class CategoryRepositoryTest extends TestCase
             'slug' => 'test-category',
             'description' => 'Description Test Category'
         ]);
+    }
+
+    public function test_get_categories()
+    {
+        Category::factory(20)->create();
+        $result = $this->categoryRepository->getCategories();
+
+        $this->assertCount(20, $result);
     }
 }

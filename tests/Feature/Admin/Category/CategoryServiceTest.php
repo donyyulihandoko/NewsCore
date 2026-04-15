@@ -25,10 +25,10 @@ class CategoryServiceTest extends TestCase
         $this->assertNotNull($this->categoryService);
     }
 
-    public function test_get_categories()
+    public function test_get_categories_pagination()
     {
         Category::factory(20)->create();
-        $result = $this->categoryService->getCategories();
+        $result = $this->categoryService->getCategoriesPagination();
         $this->assertCount(10, $result);
         $this->assertEquals(20, $result->total());
     }
@@ -94,5 +94,12 @@ class CategoryServiceTest extends TestCase
             'slug' => 'test-category',
             'description' => 'Description Test Category'
         ]);
+    }
+
+    public function test_get_categories()
+    {
+        Category::factory(20)->create();
+        $result = $this->categoryService->getCategories();
+        $this->assertCount(20, $result);
     }
 }

@@ -55,7 +55,7 @@ class CategoryControllerTest extends TestCase
             'slug' => 'test-category',
             'description' => 'Description Test Category'
         ];
-        $response = $this->actingAs($this->admin)->post(route('admin.categories.store', $data));
+        $response = $this->actingAs($this->admin)->post(route('admin.categories.store'), $data);
 
         $response->assertStatus(302)
             ->assertRedirectToRoute('admin.categories.index')
@@ -77,7 +77,7 @@ class CategoryControllerTest extends TestCase
         ];
         $response = $this->actingAs($this->admin)
             ->from(route('admin.categories.create'))
-            ->post(route('admin.categories.store', $data));
+            ->post(route('admin.categories.store'), $data);
 
         $response->assertStatus(302)
             ->assertRedirectBack()
@@ -102,7 +102,7 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->actingAs($this->admin)
             ->from(route('admin.categories.create'))
-            ->post(route('admin.categories.store', $data));
+            ->post(route('admin.categories.store'), $data);
 
         $response->assertStatus(302)
             ->assertRedirectBack()
@@ -126,7 +126,7 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->actingAs($this->admin)
             ->from(route('admin.categories.create'))
-            ->post(route('admin.categories.store', $data));
+            ->post(route('admin.categories.store'), $data);
 
         $response->assertStatus(302)
             ->assertRedirectBack()

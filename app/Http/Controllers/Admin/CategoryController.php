@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PostCategoryRequest;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -24,7 +23,7 @@ class CategoryController extends Controller
     public function index(): Response
     {
         return response()->view('admin.category.index', [
-            'categories' => $this->categoryService->getCategories()
+            'categories' => $this->categoryService->getCategoriesPagination()
         ]);
     }
 
@@ -33,7 +32,7 @@ class CategoryController extends Controller
         return response()->view('admin.category.create');
     }
 
-    public function store(PostCategoryRequest $request): RedirectResponse
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
         try {
             Log::info('Category created successfully!', [

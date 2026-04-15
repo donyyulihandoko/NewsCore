@@ -4,13 +4,14 @@ namespace App\Repositories\Impl;
 
 use App\Models\Category;
 use App\Repositories\CategoryRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryRepositoryImpl implements CategoryRepository
 {
-    public function getCategories(): LengthAwarePaginator
+    public function getCategoriesPagination(): LengthAwarePaginator
     {
-        return Category::latest()->paginate(10);
+        return Category::withCount('posts')->latest()->paginate(10);
     }
 
     public function createCategory(array $data): Category
@@ -26,5 +27,10 @@ class CategoryRepositoryImpl implements CategoryRepository
     public function removeCategory(Category $category): bool
     {
         return $category->delete();
+    }
+
+    public function getCategories(): Collection
+    {
+        return Category::orderBy('name', 'asc')->get();
     }
 }
