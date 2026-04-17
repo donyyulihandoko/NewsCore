@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Tests\Feature\Repositories;
 
 use App\Models\Category;
 use App\Repositories\CategoryRepository;
@@ -30,7 +30,7 @@ class CategoryRepositoryTest extends TestCase
         Category::factory(20)->create();
         $result = $this->categoryRepository->getCategoriesPagination();
         $this->assertNotNull($result);
-        $this->assertCount(10, $result);
+        $this->assertCount(9, $result);
         $this->assertEquals(20, $result->total());
     }
 

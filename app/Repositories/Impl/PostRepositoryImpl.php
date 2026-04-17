@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class PostRepositoryImpl implements PostRepository
 {
-    public function getPostsPagination(): LengthAwarePaginator
+    public function getPostsPagination(int $page): LengthAwarePaginator
     {
-        return Post::with(['category', 'author'])->latest()->paginate(10);
+        return Post::with(['category', 'author'])->latest()->paginate($page);
     }
 
     public function createPost(array $data): Post
@@ -28,5 +28,13 @@ class PostRepositoryImpl implements PostRepository
     public function removePost(Post $post): bool
     {
         return $post->delete();
+    }
+
+    public function getPostsByCategoryPagination(int $categoryId, int $page = 9): LengthAwarePaginator
+    {
+        return Post::with(['category', 'author'])
+            ->where('category_id', $categoryId)
+            ->latest()
+            ->paginate($page);
     }
 }

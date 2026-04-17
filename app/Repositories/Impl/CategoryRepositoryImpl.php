@@ -11,7 +11,7 @@ class CategoryRepositoryImpl implements CategoryRepository
 {
     public function getCategoriesPagination(): LengthAwarePaginator
     {
-        return Category::withCount('posts')->latest()->paginate(10);
+        return Category::withCount('posts')->latest()->paginate(9);
     }
 
     public function createCategory(array $data): Category
