@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Tests\Feature\Services;
 
-use App\Models\Category;
-use App\Services\CategoryService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Category;
+use App\Services\CategoryService;
 
 class CategoryServiceTest extends TestCase
 {
@@ -29,7 +29,7 @@ class CategoryServiceTest extends TestCase
     {
         Category::factory(20)->create();
         $result = $this->categoryService->getCategoriesPagination();
-        $this->assertCount(10, $result);
+        $this->assertCount(9, $result);
         $this->assertEquals(20, $result->total());
     }
 

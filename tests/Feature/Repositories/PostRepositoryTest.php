@@ -1,56 +1,56 @@
 <?php
 
-namespace Tests\Feature\Admin\Post;
+namespace Tests\Feature\Repositories;
 
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
-use App\Services\PostService;
+use App\Repositories\PostRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class PostServiceTest extends TestCase
+class PostRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private PostService $postService;
+    private PostRepository $postRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->postService = $this->app->make(PostService::class);
+        $this->postRepository = $this->app->make(PostRepository::class);
     }
 
-    public function test_service_container_not_null(): void
+    public function test_service_container_not_null()
     {
-        $this->assertNotNull($this->postService);
+        $this->assertNotNull($this->postRepository);
     }
 
-    public function test_get_posts_pagination(): void
+    public function test_get_posts_pagination()
     {
         Post::factory(20)->create();
-        $result =  $this->postService->getPostsPagination();
 
+        $result = $this->postRepository->getPostsPagination(10);
         $this->assertCount(10, $result);
         $this->assertEquals(20, $result->total());
     }
 
-    public function test_create_post(): void
+    public function test_create_post()
     {
         $user = User::factory()->admin()->create();
         $category = Category::factory()->create();
 
         $this->actingAs($user);
 
-        $data = [
+        $data =  [
             'title' => 'Test Post',
             'slug' => 'test-post',
             'category_id' => $category->id,
             'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
         ];
 
-        $this->postService->createPost($data);
+        $this->postRepository->createPost($data);
 
         $this->assertDatabaseHas('posts', [
             'title' => 'Test Post',
@@ -61,11 +61,10 @@ class PostServiceTest extends TestCase
         ]);
     }
 
-    public function test_update_post(): void
+    public function test_update_post()
     {
         $user = User::factory()->admin()->create();
         $category = Category::factory()->create();
-
         $post = Post::factory()->create([
             'title' => 'Test Post',
             'slug' => 'test-post',
@@ -76,20 +75,21 @@ class PostServiceTest extends TestCase
 
         $this->actingAs($user);
 
-        $data = [
-            'title' => 'Test Post Update',
-            'slug' => 'test-post-update',
+        $data =  [
+            'title' => 'Test Post update',
+            'slug' => 'test-post update',
             'category_id' => $category->id,
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit update.'
         ];
 
-        $this->postService->updatePost($post, $data);
+        $this->postRepository->updatePost($post, $data);
 
         $this->assertDatabaseHas('posts', [
-            'title' => 'Test Post Update',
-            'slug' => 'test-post-update',
+            'title' => 'Test Post update',
+            'slug' => 'test-post update',
+            'user_id' => $user->id,
             'category_id' => $category->id,
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit update.'
         ]);
 
         $this->assertDatabaseMissing('posts', [
@@ -101,10 +101,11 @@ class PostServiceTest extends TestCase
         ]);
     }
 
-    public function test_remove_post(): void
+    public function test_remove_post()
     {
         $post = Post::factory()->create();
-        $this->postService->removePost($post);
+
+        $this->postRepository->removePost($post);
 
         $this->assertDatabaseMissing('posts', [
             'id' => $post->id

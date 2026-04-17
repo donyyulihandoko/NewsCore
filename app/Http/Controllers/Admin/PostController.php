@@ -25,7 +25,7 @@ class PostController extends Controller
     public function index(): Response
     {
         return response()->view('admin.post.index', [
-            'posts' => $this->postService->getPostsPagination(),
+            'posts' => $this->postService->getPostsPagination(10),
             'title' => 'Haalaman Admin Post'
         ]);
     }

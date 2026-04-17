@@ -16,9 +16,9 @@ class PostServiceImpl implements PostService
         $this->postRepository = $postRepository;
     }
 
-    public function getPostsPagination(): LengthAwarePaginator
+    public function getPostsPagination(int $page): LengthAwarePaginator
     {
-        return $this->postRepository->getPostsPagination();
+        return $this->postRepository->getPostsPagination($page);
     }
 
     public function createPost(array $data): Post
@@ -40,5 +40,10 @@ class PostServiceImpl implements PostService
         return DB::transaction(function () use ($post) {
             return $this->postRepository->removePost($post);
         });
+    }
+
+    public function getPostsByCategoryPagination(int $categoryId, int $page = 9): LengthAwarePaginator
+    {
+        return $this->postRepository->getPostsByCategoryPagination($categoryId, $page);
     }
 }
