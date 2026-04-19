@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function show(Post $post): Response
     {
-        return response()->view('.user.post.show', [
+        return response()->view('user.post.show', [
             'post' => $post->load(['author', 'category'])
         ]);
     }

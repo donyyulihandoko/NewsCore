@@ -5,7 +5,7 @@
 
         <header class="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
             @if($post->image)
-            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
+            <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : Storage::url($post->image) }}" alt="{{ $post->title }}"
                 class="absolute inset-0 h-full w-full object-cover">
             @else
             <div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-900"></div>

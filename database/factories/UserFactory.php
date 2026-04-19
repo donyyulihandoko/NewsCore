@@ -52,6 +52,14 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function author(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'email' => 'author@gmail.com',
+            'role' => 'author'
+        ]);
+    }
+
     public function user(): static
     {
         return $this->state(fn(array $attributes) => [

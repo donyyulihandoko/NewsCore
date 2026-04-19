@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePostRequest extends FormRequest
 {
@@ -23,19 +24,11 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => [
-                'required'
-            ],
-            'slug' => [
-                'required'
-            ],
-            'user_id' => [],
-            'category_id' => [
-                'required'
-            ],
-            'body' => [
-                'required'
-            ]
+            'title'       => ['required', 'string', 'max:255', Rule::unique('posts', 'title')],
+            'slug'        => ['nullable', 'string', Rule::unique('posts', 'slug')], // nullable jika ingin di-generate otomatis
+            'category_id' => ['required', 'exists:categories,id'], // Memastikan kategori ada di DB
+            'body'        => ['required', 'string', 'min:10'],
+            'image'       => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'], // Validasi file
         ];
     }
 }

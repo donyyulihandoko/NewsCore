@@ -1,86 +1,77 @@
-<x-app-layout>
-    <x-slot name="title">My Dashboard | NewsCore</x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-                <div>
-                    <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Personal Dashboard
-                    </h1>
-                    <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your stories and monitor your performance.
-                    </p>
-                </div>
-                <div class="mt-4 md:mt-0">
-                    <a href="{{ route('admin.posts.create') }}"
-                        class="inline-flex items-center justify-center px-5 py-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 transition-all shadow-lg shadow-blue-500/20">
-                        <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
-                            </path>
-                        </svg>
-                        Write New Article
-                    </a>
-                </div>
+<x-author-layout title="Dashboard">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+            <div>
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white">Hello, {{ auth()->user()->name }} 👋</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">Here's a summary of your content
+                    performance.</p>
             </div>
+            <a href="{{ route('author.posts.create') }}"
+                class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-black hover:bg-blue-700 transition shadow-lg shadow-blue-600/20 text-center">
+                + New Article
+            </a>
+        </div>
 
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-                <div
-                    class="p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm">
-                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Articles</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white">12</p>
-                </div>
-                <div
-                    class="p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm">
-                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Views</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white">1.2k</p>
-                </div>
-                <div
-                    class="p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm">
-                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Feedback</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white">84</p>
-                </div>
-            </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div
-                class="bg-white dark:bg-gray-800 shadow-xl shadow-gray-200/50 dark:shadow-none rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">My Recent Articles</h3>
-                    <button class="text-sm text-blue-600 hover:underline font-medium">View all</button>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 font-bold">Title</th>
-                                <th scope="col" class="px-6 py-3">Category</th>
-                                <th scope="col" class="px-6 py-3">Status</th>
-                                <th scope="col" class="px-6 py-3">Date</th>
-                                <th scope="col" class="px-6 py-3 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            {{-- Contoh Baris Data --}}
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">Menguasai Laravel 11
-                                    untuk Pemula</td>
-                                <td class="px-6 py-4">Tech</td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Published</span>
-                                </td>
-                                <td class="px-6 py-4">12 April 2026</td>
-                                <td class="px-6 py-4 text-right">
-                                    <button
-                                        class="text-blue-600 dark:text-blue-500 hover:text-blue-900 font-medium">Edit</button>
-                                </td>
-                            </tr>
-                            {{-- ... --}}
-                        </tbody>
-                    </table>
-                </div>
+                class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Total Posts</p>
+                <p class="text-5xl font-black text-gray-900 dark:text-white">{{ $totalPosts }}</p>
             </div>
+            <div
+                class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Pending Review</p>
+                <p class="text-5xl font-black text-orange-500">{{ $pendingPosts }}</p>
+            </div>
+            <div
+                class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Live Views</p>
+                <p class="text-5xl font-black text-blue-600">{{ $totalViews ?? 0 }}</p>
+            </div>
+        </div>
 
+        <div
+            class="bg-white dark:bg-gray-800 rounded-[2rem] border border-gray-100 dark:border-gray-700 overflow-hidden shadow-sm">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-black text-gray-900 dark:text-white">Recent Articles</h3>
+                <a href="{{ route('author.posts.index') }}"
+                    class="text-sm font-black text-blue-600 hover:underline">View All</a>
+            </div>
+            <table class="w-full text-left">
+                <thead
+                    class="bg-gray-50 dark:bg-gray-900/50 text-gray-400 text-xs uppercase tracking-widest font-black">
+                    <tr>
+                        <th class="px-8 py-5">Title</th>
+                        <th class="px-8 py-5">Status</th>
+                        <th class="px-8 py-5">Created At</th>
+                        <th class="px-8 py-5 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @forelse($recentPosts as $post)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <td class="px-8 py-6 font-bold text-gray-900 dark:text-white">{{ $post->title }}</td>
+                        <td class="px-8 py-6">
+                            <span
+                                class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest 
+                                {{ $post->is_published ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                                {{ $post->is_published ? 'Published' : 'Draft' }}
+                            </span>
+                        </td>
+                        <td class="px-8 py-6 text-sm text-gray-500">{{ $post->created_at->format('d M, Y') }}</td>
+                        <td class="px-8 py-6 text-right">
+                            <a href="{{ route('author.posts.edit', $post->id) }}"
+                                class="text-blue-600 font-bold hover:underline">Edit</a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="px-8 py-10 text-center text-gray-400">No articles found. Start writing
+                            one!</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
-</x-app-layout>
+</x-author-layout>

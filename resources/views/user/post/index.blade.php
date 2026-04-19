@@ -27,7 +27,7 @@
 
                         <div class="aspect-video w-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
                             @if($post->image)
-                            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
+                            <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : Storage::url($post->image) }}" alt="{{ $post->title }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             @else
                             <div class="flex items-center justify-center h-full text-gray-300">

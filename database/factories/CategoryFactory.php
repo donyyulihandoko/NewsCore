@@ -22,6 +22,7 @@ class CategoryFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
+            'image' => 'https://picsum.photos/seed/' . Str::random(10) . '/600/600',
             'description' => fake()->text(10)
         ];
     }
