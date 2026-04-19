@@ -38,10 +38,60 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-2xl font-bold">Saved Stories</h3>
-                        <a href="/" class="text-blue-600 font-bold text-sm hover:underline">Browse More</a>
+                        <a href="{{ route('posts.index') }}" class="text-blue-600 font-bold text-sm hover:underline">Browse More</a>
                     </div>
-
                     <div
+                        class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-50 dark:bg-gray-700/50">
+                                    <tr>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Article Title</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Category</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                                    @forelse ($posts as $post)
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <p class="font-semibold text-gray-900 dark:text-white">{{ $post->title }}</p>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $post->category->name }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $post->created_at->format('M d, Y') }}</td>
+                                        <td class="px-6 py-4 text-right">
+                                            <a href="{{ route('posts.show', $post) }}"
+                                                class="text-blue-600 hover:text-blue-800 font-bold text-sm">Read More</a>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-16">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <div
+                                                    class="w-20 h-20 mb-6 bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                                                    <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                                                    </svg>
+                                                </div>
+                                                <p class="text-gray-500 font-medium text-center">Your article list is quiet for
+                                                    now.<br>Start writing your first article!</p>
+                                                <a href="{{ route('author.posts.create') }}"
+                                                    class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-700">Write
+                                                    New Article</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{-- <div
                         class="flex flex-col items-center justify-center p-16 bg-white dark:bg-gray-800 rounded-[2rem] border-2 border-dashed border-gray-200 dark:border-gray-700">
                         <div
                             class="w-20 h-20 mb-6 bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center">
@@ -52,7 +102,7 @@
                         </div>
                         <p class="text-gray-500 font-medium text-center">Your reading list is quiet for now. Start
                             saving articles you love!</p>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="space-y-8">

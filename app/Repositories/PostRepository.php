@@ -8,6 +8,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface PostRepository
 {
+    public function getUserRecentPost(): Collection;
+
+    // public function getPu
+
     public function getPostsPagination(int $page): LengthAwarePaginator;
 
     public function createPost(array $data): Post;
@@ -17,4 +21,6 @@ interface PostRepository
     public function removePost(Post $post): bool;
 
     public function getPostsByCategoryPagination(int $categoryId, int $page = 9): LengthAwarePaginator;
+
+    public function getPostByAuthorId(int $author_id, int $perPage = 9): LengthAwarePaginator;
 }

@@ -24,9 +24,17 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
+            'image' => 'https://picsum.photos/seed/' . Str::random(10) . '/600/600',
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
             'body' => fake()->paragraph(3)
         ];
+    }
+
+    public function published()
+    {
+        return $this->state(fn(array $attributes) => [
+            'is_published' => true,
+        ]);
     }
 }

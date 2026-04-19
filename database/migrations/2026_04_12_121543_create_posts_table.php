@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug');
+            $table->string('title')->unique();
+            $table->string('slug')->unique();
+            $table->string('image')->nullable();
+            // $table->json('images')->nullable();
+            $table->boolean('is_published')->default(false);
             $table->foreignId('user_id')->constrained(table: 'users', indexName: 'post_user_id')->onDelete('restrict');
             $table->foreignId('category_id')->constrained(table: 'categories', indexName: 'post_category_id')->onDelete('restrict');
             $table->text('body');

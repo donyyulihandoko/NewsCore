@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Author\DashboardController as AuthorDashboardController;
+use App\Http\Controllers\Author\PostController as AuthorPostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
@@ -30,6 +32,11 @@ Route::middleware(['auth', 'verified', 'is_admin'])->prefix('admin')->name('admi
     Route::resource('/dashboard', DashboardController::class)->only('index');
     Route::resource('/categories', CategoryController::class);
     Route::resource('/posts', PostController::class);
+});
+
+Route::middleware(['auth', 'verified', 'is_author'])->name('author.')->prefix('author')->group(function () {
+    Route::get('/dashboard', [AuthorDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('/posts', AuthorPostController::class);
 });
 
 Route::middleware(['auth', 'verified', 'is_user'])->group(function () {
