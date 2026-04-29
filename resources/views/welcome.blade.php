@@ -10,8 +10,14 @@
                 <div class="flex items-center space-x-4">
                     @if (Route::has('login'))
                     @auth
-                    <a href="{{ url('/dashboard') }}"
-                        class="text-sm text-gray-700 dark:text-gray-300 underline">Dashboard</a>
+                    @if (Auth::user()->role === 'author')
+                        <a href="{{ route('author.dashboard') }}" class="text-sm text-gray-700 dark:text-gray-300 underline">Dashboard</a>
+                    @elseif(Auth::user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard.index') }}" class="text-sm text-gray-700 dark:text-gray-300 underline">Dashboard</a>
+                    @else
+                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-300 underline">Dashboard</a>
+                    @endif
+                    
                     @else
                     <a href="{{ route('login') }}"
                         class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">Log

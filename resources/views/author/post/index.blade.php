@@ -1,4 +1,4 @@
-<x-author-layout title="My Posts">
+<x-app-layout title="My Posts">
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-black text-gray-900 dark:text-white">My Articles</h1>
@@ -24,8 +24,10 @@
                     @forelse($posts as $post)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                         <td class="px-8 py-6">
-                            <p class="font-black text-gray-900 dark:text-white">{{ Str::limit($post->title, 50) }}</p>
-                            <p class="text-xs text-gray-500 mt-1">{{ Str::limit(strip_tags($post->body), 60) }}</p>
+                            <a href="{{ route('author.posts.show', $post) }}">
+                                <p class="font-black hover:underline  hover:text-blue-500 text-gray-900 dark:text-white">{{ Str::limit($post->title, 50) }}</p>
+                                <p class="text-xs hover:underline  hover:text-blue-500 text-gray-500 mt-1">{{ Str::limit(strip_tags($post->body), 60) }}</p>
+                            </a>
                         </td>
                         <td class="px-8 py-6">
                             @if($post->is_published)
@@ -33,7 +35,7 @@
                                 class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Published</span>
                             @else
                             <span
-                                class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Draft</span>
+                                class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Pending</span>
                             @endif
                         </td>
                         <td class="px-8 py-6 text-sm text-gray-500 dark:text-gray-400">
@@ -82,4 +84,4 @@
             {{ $posts->links() }}
         </div>
     </div>
-</x-author-layout>
+</x-app-layout>

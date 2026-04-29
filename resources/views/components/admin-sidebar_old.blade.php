@@ -35,7 +35,7 @@
                             d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 16a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z">
                         </path>
                     </svg>
-                    <span class="flex-1 ml-3 whitespace-nowrap">Posts</span>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Posts Approval</span>
                 </a>
             </li>
             <li>

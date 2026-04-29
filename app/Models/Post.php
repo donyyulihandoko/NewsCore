@@ -23,10 +23,34 @@ class Post extends Model
         'is_published'
     ];
 
+    public $with = ['author', 'category'];
+
     public function getRouteKeyName()
     {
         return 'slug';
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    public function scopeUnpublished($query)
+    {
+        return $query->where('is_published', false);
+    }
+
+    public function scopeAuthor($query, $authorId)
+    {
+        return $query->where('user_id', $authorId);
+    }
+
+    public function scopeCategory($query, $categoryId)
+    {
+        return $query->where('category_id', $categoryId);
+    }
+
+
 
     public function author(): BelongsTo
     {
@@ -38,16 +62,20 @@ class Post extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::creating(function ($post) {
-            $post->slug = Str::slug($post->title);
+            // Hanya buat slug jika belum ada
+            if (empty($post->slug)) {
+                $post->slug = Str::slug($post->title);
+            }
         });
 
         static::updating(function ($post) {
-            $post->slug = Str::slug($post->title);
+            // Hanya update slug jika title diubah
+            if ($post->isDirty('title')) {
+                $post->slug = Str::slug($post->title);
+            }
         });
     }
 }

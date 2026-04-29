@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -23,9 +24,28 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required',],
-            'slug' => ['required'],
-            'description' => ['required']
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories', 'name')->ignore($this->category)
+            ],
+            'slug' => [
+                'nullable',
+                'string',
+                Rule::unique('categories', 'slug')->ignore($this->category)
+            ],
+            'description' => [
+                'nullable',
+                'string',
+
+            ],
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,webp',
+                'max:2048'
+            ],
         ];
     }
 }

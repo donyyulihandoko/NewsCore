@@ -26,14 +26,26 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name' => [
                 'required',
+                'string',
+                'max:255',
                 Rule::unique('categories', 'name')
             ],
             'slug' => [
-                'required'
+                'nullable',
+                'string',
+                Rule::unique('categories', 'slug')
             ],
             'description' => [
-                'required'
-            ]
+                'nullable',
+                'string',
+
+            ],
+            'image'       => [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,webp',
+                'max:2048'
+            ],
         ];
     }
 }

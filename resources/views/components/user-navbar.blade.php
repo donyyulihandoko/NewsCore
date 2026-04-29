@@ -8,7 +8,7 @@
                 </a>
                 <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider">
                     <a href="{{ route('dashboard') }}"
-                        class=" hover:text-blue-600 transition-colors {{ request()->routeIs('dashboard') ? 'text-blue-600' : 'text-gray-500' }}">Home</a>
+                        class=" hover:text-blue-600 transition-colors {{ request()->routeIs('dashboard') ? 'text-blue-600' : 'text-gray-500' }}">Dashboard</a>
                     <a href="{{ route('posts.index') }}"
                         class="hover:text-blue-600 transition-colors {{ request()->routeIs('posts.*') ? 'text-blue-600' : 'text-gray-500' }}">Latest</a>
                     <a href="{{ route('topics.index') }}"
@@ -35,8 +35,8 @@
                         <li><a href="{{ route('dashboard') }}"
                                 class="block px-4 py-3 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600">My
                                 Library</a></li>
-                        <li><a href="#"
-                                class="block px-4 py-3 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600">Settings</a>
+                        <li><a href="{{ route('profile.edit') }}"
+                                class="block px-4 py-3 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600">Profile Settings</a>
                         </li>
                     </ul>
                     <div class="py-2">

@@ -8,15 +8,30 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    <div class="min-h-screen flex flex-col">
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900">
 
-    <x-user-navbar/>
+    @if (Auth::user()->role === 'admin')
+        <x-admin-navbar />
+    @elseif (Auth::user()->role === 'author')
+        <x-author-navbar />
+    @else
+        <x-user-navbar />
+    @endif
 
-        <main class="flex-grow">
+    <x-alert />
+
+    <main class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            @if (isset($header))
+            <header class="mb-6">
+                {{ $header }}
+            </header>
+            @endif
+
             {{ $slot }}
-        </main>
-    </div>
+        </div>
+    </main>
+    <x-alert />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 

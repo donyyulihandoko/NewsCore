@@ -60,7 +60,7 @@
                                             <p class="font-semibold text-gray-900 dark:text-white">{{ $post->title }}</p>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500">{{ $post->category->name }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $post->created_at->format('M d, Y') }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</td>
                                         <td class="px-6 py-4 text-right">
                                             <a href="{{ route('posts.show', $post) }}"
                                                 class="text-blue-600 hover:text-blue-800 font-bold text-sm">Read More</a>

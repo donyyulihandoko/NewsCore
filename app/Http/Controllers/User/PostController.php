@@ -17,16 +17,20 @@ class PostController extends Controller
 
     public function index(): Response
     {
+        $this->authorize('viewAny', Post::class);
+
         return response()->view('user.post.index', [
-            'posts' => $this->postService->getPostsPagination(9)
+            'posts' => $this->postService->getUserPublishedPosts(9)
         ]);
     }
 
 
     public function show(Post $post): Response
     {
+        $this->authorize('view', $post);
+
         return response()->view('user.post.show', [
-            'post' => $post->load(['author', 'category'])
+            'post' => $this->postService->findBySlug($post)
         ]);
     }
 }

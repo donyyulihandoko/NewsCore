@@ -1,4 +1,4 @@
-<x-author-layout title="Dashboard">
+<x-app-layout title="Dashboard">
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
             <div>
@@ -13,21 +13,29 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
-                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Total Posts</p>
-                <p class="text-5xl font-black text-gray-900 dark:text-white">{{ $totalPosts }}</p>
-            </div>
-            <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
-                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Pending Review</p>
-                <p class="text-5xl font-black text-orange-500">{{ $pendingPosts }}</p>
-            </div>
-            <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
-                <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Live Views</p>
-                <p class="text-5xl font-black text-blue-600">{{ $totalViews ?? 0 }}</p>
-            </div>
+            <a href="{{ route('author.posts.index') }}">
+                <div
+                    class="bg-white hover:bg-blue-100 dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Total Posts</p>
+                    <p class="text-5xl font-black text-gray-900 dark:text-white">{{ $totalPost ?? 0 }}</p>
+                </div>
+            </a>
+
+            <a href="{{ route('author.published.post') }}">
+                <div class="bg-white hover:bg-blue-100 dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Published Posts</p>
+                    <p class="text-5xl font-black text-blue-600">{{ $publishedPost ?? 0 }}</p>
+                </div>
+            </a>
+
+            <a href="{{ route('author.pending.post') }}">
+                <div
+                    class="bg-white hover:bg-blue-100 dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Pending Review</p>
+                    <p class="text-5xl font-black text-orange-500">{{ $pendingPosts ?? 0 }}</p>
+                </div>
+            </a>
+    
         </div>
 
         <div
@@ -74,4 +82,4 @@
             </table>
         </div>
     </div>
-</x-author-layout>
+</x-app-layout>

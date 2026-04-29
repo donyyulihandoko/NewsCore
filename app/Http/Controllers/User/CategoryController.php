@@ -20,17 +20,20 @@ class CategoryController extends Controller
 
     public function index(): Response
     {
+        $this->authorize('viewAny', Category::class);
+
         return response()->view('user.category.index', [
-            'categories' => $this->categoryService->getCategoriesPagination()
+            'categories' => $this->categoryService->getCategoriesWithTotalPublishedPosts(9)
         ]);
     }
 
     public function show(Category $category): Response
     {
-        // dd($category->toArray());
+        $this->authorize('view', $category);
+
         return response()->view('user.category.show', [
-            'category' => $category,
-            'posts' => $this->postService->getPostsByCategoryPagination($category->id, 9)
+            'category' => $this->categoryService->findBySlug($category),
+            'posts' => $this->postService->getPublishedPostsByCategory($category->id, 6)
         ]);
     }
 }

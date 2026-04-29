@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface CategoryRepository
 {
-    public function getCategoriesPagination(): LengthAwarePaginator;
+    // role admin
+    public function getCategoriesPagination(int $perPage = 9): LengthAwarePaginator;
 
     public function createCategory(array $data): Category;
 
@@ -16,5 +17,13 @@ interface CategoryRepository
 
     public function removeCategory(Category $category): bool;
 
+    public function findBySlug(Category $category): Category;
+
+    public function totalCategories(): ?int;
+
+    // role author & admin
     public function getCategories(): Collection;
+
+    // role user
+    public function getCategoriesWithTotalPublishedPosts(int $perPage): LengthAwarePaginator;
 }
