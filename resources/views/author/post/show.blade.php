@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
             <div class="flex items-center space-x-3">
-                <a href="{{ route('admin.posts.index') }}"
+                <a href="{{ route('author.posts.index') }}"
                     class="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-500 hover:text-blue-600 transition-colors shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,12 +16,12 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <a href="{{ route('admin.posts.edit', $post) }}"
+                <a href="{{ route('author.posts.edit', $post) }}"
                     class="text-blue-600 bg-white border border-blue-700 hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 transition-all">
-                    Approve Article
+                    Edit Article
                 </a>
 
-                <form action="{{ route('admin.posts.destroy', $post) }}" method="POST"
+                <form action="{{ route('author.posts.destroy', $post) }}" method="POST"
                     onsubmit="return confirm('Yakin ingin menghapus?')">
                     @csrf @method('DELETE')
                     <button type="submit"
@@ -48,7 +48,8 @@
                     </div>
 
                     {{-- Gambar dengan rasio 16:9 agar konsisten --}}
-                    <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : Storage::url($post->image) }}" alt="Cover image for {{ $post->title }}"
+                    <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : Storage::url($post->image) }}"
+                        alt="Cover image for {{ $post->title }}"
                         class="w-full h-auto aspect-[16/9] object-cover object-center transform group-hover:scale-105 transition-transform duration-500 ease-out"
                         loading="lazy">
 

@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'email' => 'donyyulihandoko@gmail.com'
         ]);
-        Post::factory(50)->recycle([User::factory(10)->create(), Category::factory(20)->create()])->create();
-        Post::factory(20)->published()->recycle([User::factory(10)->create(), Category::factory(20)->create()])->create();
+        // Post::factory(50)->recycle([User::factory(10)->create(), Category::factory(20)->create()])->create();
+        // Post::factory(20)->published()->recycle([User::factory(10)->create(), Category::factory(20)->create()])->create();
     }
 }

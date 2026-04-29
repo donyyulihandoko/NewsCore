@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Services\CategoryService;
 use App\Services\PostService;
 use Exception;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -27,9 +28,11 @@ class PostController extends Controller
 
     public function index(): View
     {
+        $this->authorize('viewAny', Post::class);
+
         $author_id = Auth::user()->id;
         return view('author.post.index', [
-            'posts' => $this->postService->getPostByAuthorId($author_id, 9)
+            'posts' => $this->postService->getPostsByAuthorId($author_id, 9)
         ]);
     }
 
@@ -43,34 +46,51 @@ class PostController extends Controller
     public function store(StorePostRequest $request): RedirectResponse
     {
         try {
+            $this->authorize('create', Post::class);
+
             Log::info('Post created successfully!', [
                 'user_id' => Auth::user()->id,
                 'payload' => $request->except(['body', 'image'])
             ]);
+
             $this->postService->createPost($request->validated());
-            return to_route('author.posts.index')->with('success', 'Post create successfully!');
+            return to_route('author.posts.index')->with('success', 'Post created successfully!');
         } catch (Exception $e) {
             Log::error('Post create failed! : ' . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Post create failed!');
         }
     }
 
+    public function show(Post $post): Response
+    {
+        $this->authorize('view', $post);
+
+        return response()->view('author.post.show', [
+            'post' => $this->postService->findBySlug($post)
+        ]);
+    }
+
     public function edit(Post $post): Response
     {
+        $this->authorize('view', $post);
+
         return response()->view('author.post.edit', [
             'categories' => $this->categoryService->getCategories(),
-            'post' => $post->load(['category', 'author'])
+            'post' => $this->postService->findBySlug($post)
         ]);
     }
 
     public function update(UpdatePostRequest $request, Post $post): RedirectResponse
     {
         try {
+            $this->authorize('update', $post);
+
             Log::info('Post update successfully!', [
                 'user_id' => Auth::user()->id,
                 'item_updated' => $post->id,
                 'payload' => $request->except(['body', 'image'])
             ]);
+
             $this->postService->updatePost($post, $request->validated());
             return to_route('author.posts.index')->with('success', 'Post updated successfully!');
         } catch (Exception $e) {
@@ -79,31 +99,18 @@ class PostController extends Controller
         }
     }
 
-    // public function update(UpdatePostRequest $request, Post $post): RedirectResponse
-    // {
-    //     try {
-    //         Log::info('Post update successfully!', [
-    //             'user_id' => Auth::user()->id,
-    //             'payload' => $request->except('body')
-    //         ]);
-    //         $this->postService->updatePost($post, $request->validated());
-    //         return to_route('admin.posts.index')->with('success', 'Post updated successfully!');
-    //     } catch (Exception $e) {
-    //         Log::error('Post update failed! : ' . $e->getMessage());
-    //         return redirect()->back()->withInput()->with('error', 'Post update failed!');
-    //     }
-    // }
-
     public function destroy(Post $post): RedirectResponse
     {
         try {
+            $this->authorize('forceDelete', $post);
+
             Log::info('Post deleted', [
                 'user_id' => Auth::user()->id,
                 'item_deleted' => $post->id
             ]);
-            $this->postService->removePost($post);
 
-            return redirect()->back()->with('success', 'Post delete successfully!');
+            $this->postService->removePost($post);
+            return redirect()->back()->with('success', 'Post deleted successfully!');
         } catch (Exception $e) {
             Log::error('Post delete failed! : ' . $e->getMessage());
             return redirect()->back()->with('error', 'Post delete failed!');

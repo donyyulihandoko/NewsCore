@@ -16,25 +16,19 @@ class PostServiceImpl implements PostService
 
     public function __construct(private PostRepository $postRepository)
     {
-        $this->postRepository = $postRepository;
+        // 
     }
 
-    public function getUserRecentPost(): Collection
-    {
-        return $this->postRepository->getUserRecentPost();
-    }
-
-    public function getPostsPagination(int $page): LengthAwarePaginator
-    {
-        return $this->postRepository->getPostsPagination($page);
-    }
-
+    // crud
     private function handleImage(?UploadedFile $file, ?string $oldPath = null)
     {
+        // no upload file
         if (!$file) return $oldPath;
 
-        if ($oldPath) return  Storage::disk('public')->delete($oldPath);
+        // jika ada file lama (update file)
+        if ($oldPath) Storage::disk('public')->delete($oldPath);
 
+        // simpan file baru
         return $file->store('post-images', 'public');
     }
 
@@ -64,17 +58,116 @@ class PostServiceImpl implements PostService
     public function removePost(Post $post): bool
     {
         return DB::transaction(function () use ($post) {
-            return $this->postRepository->removePost($post);
+            $pathImage = $post->image;
+            $delete = $this->postRepository->removePost($post);
+
+            if ($pathImage && $delete) Storage::disk('public')->delete($pathImage);
+
+            return (bool) $delete;
         });
     }
 
-    public function getPostsByCategoryPagination(int $categoryId, int $page = 9): LengthAwarePaginator
+    public function findBySlug(Post $post): Post
     {
-        return $this->postRepository->getPostsByCategoryPagination($categoryId, $page);
+        return $this->postRepository->findBySlug($post);
     }
 
-    public function getPostByAuthorId(int $author_id, int $perPage): LengthAwarePaginator
+    // role admin
+    public function totalAllPosts(): ?int
     {
-        return $this->postRepository->getPostByAuthorId($author_id, $perPage);
+        return $this->postRepository->totalAllPosts();
+    }
+
+    public function totalPublishedPosts(): ?int
+    {
+        return $this->postRepository->totalPublishedPosts();
+    }
+
+    public function totalPendingPosts(): ?int
+    {
+        return $this->postRepository->totalPendingPosts();
+    }
+
+    public function getPostsPagination(int $page): LengthAwarePaginator
+    {
+        return $this->postRepository->getPostsPagination($page);
+    }
+
+
+    public function getPublishedPosts(int $perPage): LengthAwarePaginator
+    {
+        return $this->postRepository->getPublishedPosts($perPage);
+    }
+
+    public function getPendingPosts(int $perPage): LengthAwarePaginator
+    {
+        return $this->postRepository->getPendingPosts($perPage);
+    }
+
+    public function approvalPendingPost(Post $post, array $data): bool
+    {
+        return DB::transaction(function () use ($post, $data) {
+            return $this->postRepository->approvalPendingPost($post, $data);
+        });
+    }
+
+    public function recentActivity(): Collection
+    {
+        return $this->postRepository->recentActivity();
+    }
+
+
+    // role author
+    public function getPostsByAuthorId(int $authorId, int $perPage): LengthAwarePaginator
+    {
+        return $this->postRepository->getPostsByAuthorId($authorId, $perPage);
+    }
+
+    public function totalPostsByAuthor(int $authorId): ?int
+    {
+        return $this->postRepository->totalPostsByAuthor($authorId);
+    }
+
+    public function getRecentPostsByAuthor(int $authorId): Collection
+    {
+        return $this->postRepository->getRecentPostsByAuthor($authorId);
+    }
+
+    public function totalPendingPostsByAuthor(int $authorId): ?int
+    {
+        return $this->postRepository->totalPendingPostsByAuthor($authorId);
+    }
+
+    public function getPendingPostsByAuthor(int $authorId, int $perPage): LengthAwarePaginator
+    {
+        return $this->postRepository->getPendingPostsByAuthor($authorId, $perPage);
+    }
+
+    public function totalPublishedPostsByAuthor(int $authorId): ?int
+    {
+        return $this->postRepository->totalPublishedPostsByAuthor($authorId);
+    }
+
+    public function getPublishedPostsByAuthor(int $authorId, int $perPage): LengthAwarePaginator
+    {
+        return $this->postRepository->getPublishedPostsByAuthor($authorId, $perPage);
+    }
+
+
+
+    // role user
+    public function getUserRecentPosts(): Collection
+    {
+        return $this->postRepository->getUserRecentPosts();
+    }
+
+    public function getUserPublishedPosts(int $perPage = 9): LengthAwarePaginator
+    {
+        return $this->postRepository->getUserPublishedPosts($perPage);
+    }
+
+    public function getPublishedPostsByCategory(int $categoryId, int $perPage = 9): LengthAwarePaginator
+    {
+        return $this->postRepository->getPublishedPostsByCategory($categoryId, $perPage);
     }
 }

@@ -24,11 +24,32 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'       => ['required', 'string', 'max:255', Rule::unique('posts', 'title')],
-            'slug'        => ['nullable', 'string', Rule::unique('posts', 'slug')], // nullable jika ingin di-generate otomatis
-            'category_id' => ['required', 'exists:categories,id'], // Memastikan kategori ada di DB
-            'body'        => ['required', 'string', 'min:10'],
-            'image'       => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'], // Validasi file
+            'title'       => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('posts', 'title')
+            ],
+            'slug'        => [
+                'nullable',
+                'string',
+                Rule::unique('posts', 'slug')
+            ], // nullable jika ingin di-generate otomatis
+            'category_id' => [
+                'required',
+                'exists:categories,id'
+            ], // Memastikan kategori ada di DB
+            'body'        => [
+                'required',
+                'string',
+                'min:10'
+            ],
+            'image'       => [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,webp',
+                'max:2048'
+            ], // Validasi file
         ];
     }
 }

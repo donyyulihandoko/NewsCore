@@ -1,35 +1,35 @@
 <?php
 
-namespace Tests\Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Author;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class DashboardControllerTest extends TestCase
+class DahsboardControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $admin;
+    private User $author;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->admin = User::factory()->admin()->create();
+        $this->author = User::factory()->author()->create();
     }
 
     public function test_index_success()
     {
-        $response = $this->actingAs($this->admin)
-            ->get(route('admin.dashboard.index'));
+        $response = $this->actingAs($this->author)
+            ->get(route('author.dashboard'));
 
         $response->assertStatus(200);
     }
 
     public function test_index_failed_not_login()
     {
-        $response = $this->get(route('admin.dashboard.index'));
+        $response = $this->get(route('author.dashboard'));
 
         $response->assertStatus(302)
             ->assertRedirectToRoute('login');
@@ -37,16 +37,16 @@ class DashboardControllerTest extends TestCase
 
     public function test_published_post()
     {
-        $response = $this->actingAs($this->admin)
-            ->get(route('admin.published.post'));
+        $response = $this->actingAs($this->author)
+            ->get(route('author.published.post'));
 
         $response->assertStatus(200);
     }
 
     public function test_pending_post()
     {
-        $response = $this->actingAs($this->admin)
-            ->get(route('admin.pending.post'));
+        $response = $this->actingAs($this->author)
+            ->get(route('author.pending.post'));
 
         $response->assertStatus(200);
     }

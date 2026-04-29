@@ -1,4 +1,4 @@
-<x-author-layout>
+<x-app-layout>
     <x-slot name="header">
         <div class="flex items-center space-x-3">
             <a href="{{ route('author.posts.index') }}" class="text-gray-500 hover:text-blue-600 transition-colors">
@@ -126,4 +126,4 @@
 
         document.addEventListener('trix-file-accept', function(e) { e.preventDefault(); });
     </script>
-</x-author-layout>
+</x-app-layout>

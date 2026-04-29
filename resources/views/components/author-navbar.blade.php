@@ -41,7 +41,7 @@
                         <li><a href="{{ route('author.dashboard') }}"
                                 class="block px-4 py-3 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600">Dashboard</a>
                         </li>
-                        <li><a href="#"
+                        <li><a href="{{ route('profile.edit') }}"
                                 class="block px-4 py-3 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600">Profile
                                 Settings</a>
                         </li>

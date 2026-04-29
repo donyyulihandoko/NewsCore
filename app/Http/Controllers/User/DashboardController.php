@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index(): Response
     {
         return response()->view('user.dashboard', [
-            'posts' => $this->postService->getUserRecentArticle()
+            'posts' => $this->postService->getUserRecentPosts()
         ]);
     }
 }

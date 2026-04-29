@@ -44,6 +44,11 @@ class UpdatePostRequest extends FormRequest
                 'exists:categories,id'
             ],
 
+            'is_published' => [
+                'sometimes',
+                'boolean'
+            ],
+
             'body' => [
                 'required',
                 'string',
