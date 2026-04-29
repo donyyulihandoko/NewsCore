@@ -1,7 +1,7 @@
 <?php
 
-use App\Providers\AppServiceProvider;
-
 return [
-    AppServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\CategoryServiceProvider::class,
+    App\Providers\PostServiceProvider::class,
 ];
