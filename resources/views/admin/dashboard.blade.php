@@ -28,6 +28,8 @@
         => 'admin.published.post'],
         ['title' => 'Categories', 'value' => $totalCategories, 'icon' => 'tag', 'color' => 'indigo', 'route' =>
         'admin.categories.index'],
+        ['title' => 'Comments', 'value' => $totalComments, 'icon' => 'tag', 'color' => 'indigo', 'route' =>
+        'admin.comments.index']
         ];
         @endphp
     

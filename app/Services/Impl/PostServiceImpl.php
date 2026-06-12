@@ -16,7 +16,7 @@ class PostServiceImpl implements PostService
 
     public function __construct(private PostRepository $postRepository)
     {
-        // 
+        // inject repository
     }
 
     // crud

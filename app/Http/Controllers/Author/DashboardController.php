@@ -14,7 +14,7 @@ class DashboardController extends Controller
 {
     public function __construct(private PostService $postService)
     {
-        // 
+        // Constructor with dependency injection for PostService
     }
 
     public function index(): Response
@@ -31,7 +31,6 @@ class DashboardController extends Controller
     public function pendingPost(): Response
     {
         $this->authorize('viewAny', Post::class);
-
         $author = Auth::user();
         return response()->view('author.post.index', [
             'posts' => $this->postService->getPendingPostsByAuthor($author->id, 9)
@@ -41,7 +40,6 @@ class DashboardController extends Controller
     public function publishedPost(): Response
     {
         $this->authorize('viewAny', Post::class);
-
         $author = Auth::user();
         return response()->view('author.post.index', [
             'posts' => $this->postService->getPublishedPostsByAuthor($author->id, 9)

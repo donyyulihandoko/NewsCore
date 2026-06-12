@@ -12,6 +12,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Illuminate\Database\QueryException;
+use Override;
 
 class PostControllerTest extends TestCase
 {
@@ -125,10 +127,15 @@ class PostControllerTest extends TestCase
         $category = Category::factory()->create();
 
         // set up mocking database error
-        $this->mock(PostService::class, function ($mock) {
+        $this->mock(PostService::class, function ($mock) use ($category) {
             $mock->shouldReceive('createPost')
                 ->once()
-                ->andThrow(new Exception('Database error unexpected'));
+                ->andThrow(new QueryException(
+                'mysql',                           // Nama koneksi database
+                'insert into posts (title, slug, category_id, user_id, body, image) values (?, ?, ?, ?, ?, ?)', // Raw SQL tiruan
+                ['Test Post', 'test-post', $category->id, $this->admin->id, 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', 'test-image.jpg'],                    // Bindings
+                new \Exception('Database constraint error')
+            ));
         });
 
         // store data post
@@ -145,7 +152,7 @@ class PostControllerTest extends TestCase
         // assertion
         $response->assertStatus(302)
             ->assertRedirectBack()
-            ->assertSessionHas('error', 'Post create failed!');
+            ->assertSessionHas('error', 'Something went wrong on our end. Contact support if the issue persists.');
 
         $this->assertDatabaseMissing('posts', [
             'title' => 'Test Post',
@@ -344,10 +351,16 @@ class PostControllerTest extends TestCase
     {
         $post = Post::factory()->create();
 
-        $this->mock(PostService::class, function ($mock) {
+        $this->mock(PostService::class, function ($mock) use ($post) {
             $mock->shouldReceive('removePost')
                 ->once()
-                ->andThrow(new Exception('Database error unxepected'));
+                ->andThrow(
+                    new QueryException(
+                        'mysql',                           // Nama koneksi database
+                        'delete from posts where id = ?', // Raw SQL tiruan
+                        [$post->id],                    // Bindings
+                        new \Exception('Database constraint error')
+                    ));
         });
 
         $response = $this->actingAs($this->admin)
@@ -356,7 +369,7 @@ class PostControllerTest extends TestCase
 
         $response->assertStatus(302)
             ->assertRedirectBack()
-            ->assertSessionHas('error', 'Post delete failed!');
+            ->assertSessionHas('error', 'Something went wrong on our end. Contact support if the issue persists.');
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id

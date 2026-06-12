@@ -103,11 +103,11 @@ class PostRepositoryImpl implements PostRepository
     }
 
     // role author
-    public function getPostsByAuthorId(int $authorId, int $perPage = 9): LengthAwarePaginator
+    public function getPostsByAuthorId(int $authorId, int $perPage = 9): ?LengthAwarePaginator
     {
         return Post::query()
             ->with(['category', 'author'])
-            ->author($authorId)
+            ->where('user_id', $authorId)
             ->latest()
             ->paginate($perPage);
     }
