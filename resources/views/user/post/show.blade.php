@@ -3,10 +3,11 @@
 
     <article class="min-h-screen bg-white dark:bg-gray-900">
 
+        {{-- ================= HERO HEADER ================= --}}
         <header class="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
             @if($post->image)
-            <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : Storage::url($post->image) }}" alt="{{ $post->title }}"
-                class="absolute inset-0 h-full w-full object-cover">
+            <img src="{{ Str::startsWith($post->image, 'http') ? $post->image : Storage::url($post->image) }}"
+                alt="{{ $post->title }}" class="absolute inset-0 h-full w-full object-cover">
             @else
             <div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-900"></div>
             @endif
@@ -27,18 +28,22 @@
                     <div class="mt-8 flex items-center justify-center space-x-4 text-white/90 font-bold">
                         <img class="w-10 h-10 rounded-full border-2 border-white/50"
                             src="https://ui-avatars.com/api/?name={{ urlencode($post->author->name) }}&background=random"
-                            alt="">
+                            alt="{{ $post->author->name }}">
                         <div class="text-left">
                             <p class="text-sm">{{ $post->author->name }}</p>
-                            <p class="text-xs opacity-70">{{ $post->created_at->format('M d, Y') }} • {{
-                                $post->created_at->diffForHumans() }}</p>
+                            <p class="text-xs opacity-70">
+                                {{ $post->created_at->format('M d, Y') }} • {{ $post->created_at->diffForHumans() }}
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
 
+        {{-- ================= MAIN CONTENT AREA ================= --}}
         <div class="relative -mt-20 px-4 pb-20">
+
+            {{-- Artikel Card --}}
             <div
                 class="mx-auto max-w-4xl bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-2xl p-8 md:p-16 border border-gray-100 dark:border-gray-700">
 
@@ -64,11 +69,13 @@
                     </div>
                 </div>
 
+                {{-- Isi Artikel --}}
                 <div
                     class="prose prose-lg md:prose-xl dark:prose-invert max-w-none prose-p:text-gray-600 dark:prose-p:text-gray-300 prose-headings:font-black prose-headings:tracking-tighter prose-a:text-blue-600">
                     {!! $post->body !!}
                 </div>
 
+                {{-- Tag --}}
                 <div class="mt-16 pt-8 border-t border-gray-100 dark:border-gray-700">
                     <div class="flex flex-wrap gap-2">
                         <span
@@ -79,10 +86,12 @@
                 </div>
             </div>
 
+            {{-- Profil Penulis / Author Bio --}}
             <div
                 class="mx-auto max-w-4xl mt-10 p-8 bg-blue-50 dark:bg-blue-900/20 rounded-[2.5rem] flex items-center space-x-6">
                 <img class="w-20 h-20 rounded-3xl object-cover shadow-lg"
-                    src="https://ui-avatars.com/api/?name={{ urlencode($post->author->name) }}&size=128" alt="">
+                    src="https://ui-avatars.com/api/?name={{ urlencode($post->author->name) }}&size=128"
+                    alt="{{ $post->author->name }}">
                 <div>
                     <h4 class="text-xl font-black text-gray-900 dark:text-white">Written by {{ $post->author->name }}
                     </h4>
@@ -90,6 +99,128 @@
                         Sharing thoughts on modern web development.</p>
                 </div>
             </div>
+
+            {{-- ================= DISKUSI & KOMENTAR ================= --}}
+            <div
+                class="mx-auto max-w-4xl mt-12 bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-xl p-8 md:p-12 border border-gray-100 dark:border-gray-700">
+
+                {{-- Form Penulisan Komentar --}}
+                <div class="mb-12">
+                    <h3
+                        class="text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-2 flex items-center gap-3">
+                        Discussion
+                        <span
+                            class="text-sm font-bold bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full">
+                            {{ $post->comments->count() }}
+                        </span>
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Share your thoughts, ask questions, or
+                        leave feedback about this story.</p>
+
+                    @auth
+                    <form action="{{ route('posts.comments.store', $post) }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div class="relative">
+                            <textarea name="body" rows="4" required
+                                placeholder="Join the discussion... write a respectful comment."
+                                class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 text-sm text-gray-900 dark:text-white rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 placeholder-gray-400 dark:placeholder-gray-500 transition-all resize-none @error('body') border-red-500 @enderror">{{ old('body') }}</textarea>
+
+                            @error('body')
+                            <p class="text-xs font-semibold text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit"
+                                class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all transform hover:-translate-y-0.5">
+                                Post Comment
+                            </button>
+                        </div>
+                    </form>
+                    @else
+                    <div
+                        class="p-6 bg-gray-50 dark:bg-gray-900/30 border border-dashed border-gray-200 dark:border-gray-700 rounded-2xl text-center">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                            Want to join the discussion?
+                            <a href="{{ route('login') }}"
+                                class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Log in to your
+                                account</a> to write a comment.
+                        </p>
+                    </div>
+                    @endauth
+                </div>
+
+                {{-- Daftar Komentar User --}}
+                <div class="space-y-6 pt-6 border-t border-gray-100 dark:border-gray-700">
+                    @forelse ($post->comments->sortByDesc('created_at') as $comment)
+                    <div
+                        class="group flex items-start space-x-4 p-4 rounded-2xl hover:bg-gray-50/50 dark:hover:bg-gray-700/20 transition-colors">
+
+                        {{-- Avatar Kotak Bulat Inisial --}}
+                        <div
+                            class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 border border-blue-100/50 dark:border-gray-600 flex flex-shrink-0 items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm uppercase shadow-sm">
+                            {{ substr($comment->user->name, 0, 2) }}
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="font-bold text-sm text-gray-900 dark:text-white truncate">
+                                        {{ $comment->user->name }}
+                                    </h4>
+                                    {{-- Badge Penanda jika dia Pembuat Artikel --}}
+                                    @if($comment->user_id === $post->user_id)
+                                    <span
+                                        class="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-md">
+                                        Author
+                                    </span>
+                                    @endif
+                                </div>
+                                <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap"
+                                    title="{{ $comment->created_at->format('d M Y, H:i') }}">
+                                    {{ $comment->created_at->diffForHumans() }}
+                                </span>
+                            </div>
+
+                            <p
+                                class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-line break-words leading-relaxed">
+                                {{ $comment->body }}
+                            </p>
+
+                            {{-- Tombol Hapus Terproteksi (Hanya muncul jika yang login adalah pemilik komentar) --}}
+                            @auth
+                            @if($comment->user_id === auth()->id())
+                            <div class="pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <form action="{{ route('comments.destroy', $comment) }}" method="POST"
+                                    onsubmit="return confirm('Delete this comment permanently?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-xs font-bold text-red-500 dark:text-red-400 hover:underline focus:outline-none">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                            @endif
+                            @endauth
+                        </div>
+                    </div>
+                    @empty
+                    {{-- State Kosong --}}
+                    <div class="text-center py-8">
+                        <svg class="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                            </path>
+                        </svg>
+                        <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">No comments yet</p>
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Be the first to share your thoughts!
+                        </p>
+                    </div>
+                    @endforelse
+                </div>
+            </div>
+
         </div>
     </article>
 </x-app-layout>

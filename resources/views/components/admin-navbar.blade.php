@@ -22,6 +22,9 @@
 
                     <a href="{{ route('admin.categories.index') }}"
                         class="hover:text-blue-600 transition-colors {{ request()->routeIs('admin.categories.*') ? 'text-blue-600' : 'text-gray-500' }}">Categories</a>
+                    
+                    <a href="{{ route('admin.comments.index') }}"
+                        class="hover:text-blue-600 transition-colors {{ request()->routeIs('admin.comments.*') ? 'text-blue-600' : 'text-gray-500' }}">Comments</a>
                 </div>
             </div>
 

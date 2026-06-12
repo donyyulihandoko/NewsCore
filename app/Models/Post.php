@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -30,25 +31,25 @@ class Post extends Model
         return 'slug';
     }
 
-    public function scopePublished($query)
-    {
-        return $query->where('is_published', true);
-    }
+    // public function scopePublished($query)
+    // {
+    //     return $query->where('is_published', true);
+    // }
 
-    public function scopeUnpublished($query)
-    {
-        return $query->where('is_published', false);
-    }
+    // public function scopeUnpublished($query)
+    // {
+    //     return $query->where('is_published', false);
+    // }
 
-    public function scopeAuthor($query, $authorId)
-    {
-        return $query->where('user_id', $authorId);
-    }
+    // public function scopeAuthor($query, $authorId)
+    // {
+    //     return $query->where('user_id', $authorId);
+    // }
 
-    public function scopeCategory($query, $categoryId)
-    {
-        return $query->where('category_id', $categoryId);
-    }
+    // public function scopeCategory($query, $categoryId)
+    // {
+    //     return $query->where('category_id', $categoryId);
+    // }
 
 
 
@@ -61,6 +62,12 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
+
 
     protected static function booted()
     {

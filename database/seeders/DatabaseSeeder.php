@@ -17,12 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->admin()->create();
-        User::factory()->author()->create();
-        User::factory()->create([
-            'email' => 'donyyulihandoko@gmail.com'
+        $this->call([
+            UserSeeder::class,
+            CommentSeeder::class,
         ]);
-        // Post::factory(50)->recycle([User::factory(10)->create(), Category::factory(20)->create()])->create();
-        // Post::factory(20)->published()->recycle([User::factory(10)->create(), Category::factory(20)->create()])->create();
     }
 }

@@ -16,8 +16,9 @@ class CategoryServiceImpl implements CategoryService
 
     public function __construct(private CategoryRepository $categoryRepository)
     {
-        //  
+        // inject repository
     }
+    
     // handle image
     private function handleImage(?UploadedFile $file, ?string $oldPath = null)
     {
