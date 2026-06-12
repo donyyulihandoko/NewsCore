@@ -38,7 +38,7 @@ interface PostRepository
 
 
     // role author
-    public function getPostsByAuthorId(int $authorId, int $perPage = 9): LengthAwarePaginator;
+    public function getPostsByAuthorId(int $authorId, int $perPage = 9): ?LengthAwarePaginator;
 
     public function totalPostsByAuthor(int $authorId): ?int;
 

@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Services\CategoryService;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -129,10 +130,17 @@ class CategoryControllerTest extends TestCase
     public function test_store_failed_throw_exception()
     {
         // set up mocking exception
-        $this->mock(CategoryService::class, function ($mock) {
+        $this->mock(CategoryService::class, function ($mock)  {
             $mock->shouldReceive('createCategory')
                 ->once()
-                ->andThrow(new Exception('Database error unexpected'));
+                ->andThrow(
+                    new QueryException(
+                        'mysql',                           // Nama koneksi database
+                        'insert into categories (name, slug, description, image) values (?, ?, ?, ?)', // Raw SQL tiruan
+                        [],                    // Bindings
+                        new \Exception('Database constraint error')
+                    )
+                );
         });
 
         // set up store data
@@ -148,7 +156,7 @@ class CategoryControllerTest extends TestCase
         // assertion
         $response->assertStatus(302)
             ->assertRedirectBack()
-            ->assertSessionHas('error', 'Category create failed!');
+            ->assertSessionHas('error', 'Something went wrong on our end. Contact support if the issue persists.');
     }
 
     public function test_edit_success()
@@ -211,6 +219,56 @@ class CategoryControllerTest extends TestCase
         $this->assertTrue(Storage::disk('public')->exists($oldImage));
     }
 
+    public function test_update_success_with_changing_image()
+    {
+        // setup old image
+        $oldImage = 'category-images/existing-icon.jpg';
+        $file = UploadedFile::fake()->image('existing-icon.jpg');
+        $file->storeAs('category-images', 'existing-icon.jpg', 'public');
+
+    
+        // set up old data category
+        $category = Category::factory()->create([
+            'name' => 'Test Category',
+            'slug' => 'test-category',
+            'description' => 'Description Test Category',
+            'image' => $oldImage
+        ]);
+
+        // set up new image
+        $newImage = UploadedFile::fake()->image('new-icon.jpg');
+        $newImage->storeAs('category-images', 'new-icon.jpg', 'public');
+
+        // update data
+        $response = $this->actingAs($this->admin)
+            ->put(route('admin.categories.update', $category), [
+                'name' => 'Test Category Update',
+                'slug' => 'test-category-update',
+                'description' => 'Description Test Category Update',
+                'image' => $newImage
+            ]);
+
+        // assertion
+        $response->assertStatus(302)
+            ->assertRedirectToRoute('admin.categories.index')
+            ->assertSessionHas('success', 'Category updated successfully!');
+
+        $this->assertDatabaseHas('categories', [
+            'name' => 'Test Category Update',
+            'slug' => 'test-category-update',
+            'description' => 'Description Test Category Update'
+        ]);
+
+        $this->assertDatabaseMissing('categories', [
+            'name' => 'Test Category',
+            'slug' => 'test-category',
+            'description' => 'Description Test Category'
+        ]);
+
+        $this->assertFalse(Storage::disk('public')->exists($oldImage));
+        $this->assertTrue(Storage::disk('public')->exists('category-images/new-icon.jpg'));
+    }
+
     public function test_update_failed_empty_data()
     {
         $category = Category::factory()->create([
@@ -250,10 +308,15 @@ class CategoryControllerTest extends TestCase
             'description' => 'Description Test Category'
         ]);
 
-        $this->mock(CategoryService::class, function ($mock) {
+        $this->mock(CategoryService::class, function ($mock) use ($category) {
             $mock->shouldReceive('updateCategory')
                 ->once()
-                ->andThrow(new Exception('Database error unexpected'));
+                ->andThrow(new QueryException(
+                    'mysql',
+                    'update categories set name = ?, slug = ?, description = ? where id = ?',
+                    ['Test Category Update', 'test-category-update', 'Description Test Category Update', $category->id],
+                    new \Exception('Database constraint error')
+                ));
         });
 
         $response = $this->actingAs($this->admin)
@@ -266,7 +329,7 @@ class CategoryControllerTest extends TestCase
 
         $response->assertStatus(302)
             ->assertRedirectBack()
-            ->assertSessionHas('error', 'Category update failed!');
+            ->assertSessionHas('error', 'Something went wrong on our end. Contact support if the issue persists.');
 
         $this->assertDatabaseMissing('categories', [
             'name' => 'Test Category Update',
@@ -320,8 +383,7 @@ class CategoryControllerTest extends TestCase
         // assertion
         $response->assertStatus(302)
             ->assertRedirectBack()
-            ->assertSessionHas('error', 'The category cannot be deleted because it still contains associated post.');
-
+            ->assertSessionHas('error', 'The category cannot be deleted because it still contains associated post.'); 
         $this->assertDatabaseHas('categories', [
             'id' => $category->id
         ]);

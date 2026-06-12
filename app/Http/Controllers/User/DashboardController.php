@@ -12,7 +12,7 @@ class DashboardController extends Controller
 
     public function __construct(private PostService $postService)
     {
-        // 
+        // Constructor with dependency injection for PostService
     }
 
     public function index(): Response
