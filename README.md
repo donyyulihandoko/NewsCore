@@ -1,58 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <h1>📰 NewsCore</h1>
+  <p><b>Modern Content Management System (CMS) & Blog Berita Platform</b></p>
+  <p>
+    <img src="https://img.shields.io/badge/PHP-^8.3-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP Version" />
+    <img src="https://img.shields.io/badge/Laravel-^13.0-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel Version" />
+    <img src="https://img.shields.io/badge/Testing-PHPUnit-38B2AC?style=flat-square&logo=phpunit&logoColor=white" alt="PHPUnit" />
+    <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" />
+  </p>
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<hr />
+
+<h2>📌 Ringkasan Proyek</h2>
+<p>
+  <b>NewsCore</b> adalah platform Content Management System (CMS) berita dan blog yang dibangun dengan arsitektur <i>clean code</i> berbasis <b>Laravel</b>. Proyek ini memprioritaskan performa tinggi, keterbacaan kode, serta pengelolaan data yang terstruktur melalui penerapan <b>Repository & Service Pattern</b> secara disiplin tanpa mengandalkan paket pihak ketiga yang berlebihan.
 </p>
 
-## About Laravel
+<hr />
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<h2>🚀 Fitur Utama</h2>
+<ul>
+  <li><b>Authentication & Access Management:</b> Sistem otentikasi aman menggunakan Laravel Breeze.</li>
+  <li><b>Content & Media Management:</b> Pengelolaan postingan berita, kategori dinamis, dan aset media secara terstruktur.</li>
+  <li><b>Clean Architecture:</b> Pemisahan <i>business logic</i> dan query database menggunakan <b>Repository & Service Pattern</b>.</li>
+  <li><b>Automated Testing:</b> Jaminan stabilitas aplikasi dengan pengujian otomatis menggunakan <b>PHPUnit</b>.</li>
+  <li><b>Development Tools:</b> Integrasi Laravel Debugbar & Pail untuk efisiensi <i>debugging</i> dan pencatatan log.</li>
+</ul>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<hr />
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<h2>🛠️ Tech Stack & Dependencies</h2>
+<table>
+  <tr>
+    <td><b>Core Framework</b></td>
+    <td>PHP ^8.3, Laravel ^13.0</td>
+  </tr>
+  <tr>
+    <td><b>Authentication</b></td>
+    <td>Laravel Breeze (^2.4)</td>
+  </tr>
+  <tr>
+    <td><b>Testing & QA</b></td>
+    <td>PHPUnit (^12.5), Mockery (^1.6)</td>
+  </tr>
+  <tr>
+    <td><b>Dev Utilities</b></td>
+    <td>Laravel Debugbar, Laravel Pail, Laravel Pint, Laravel Boost</td>
+  </tr>
+</table>
 
-## Learning Laravel
+<hr />
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<h2>⚙️ Panduan Instalasi (Getting Started)</h2>
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<p>Ikuti langkah-langkah berikut untuk menjalankan proyek ini di lingkungan lokal kamu:</p>
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+<ol>
+  <li>
+    <b>Clone Repository:</b>
+    <pre><code>git clone https://github.com/donyyulihandoko/NewsCore.git
+cd NewsCore</code></pre>
+  </li>
+  <li>
+    <b>Jalankan Automated Setup (Rekomendasi):</b>
+    <p>Proyek ini sudah dilengkapi dengan skrip penginstalan otomatis composer:</p>
+    <pre><code>composer run setup</code></pre>
+  </li>
+  <li>
+    <b>Menjalankan Server Lokal (Development):</b>
+    <p>Menjalankan <i>server</i>, <i>queue listener</i>, dan <i>Vite</i> secara bersamaan:</p>
+    <pre><code>composer run dev</code></pre>
+  </li>
+  <li>
+    <b>Menjalankan Testing:</b>
+    <pre><code>composer run test</code></pre>
+  </li>
+</ol>
 
-## Agentic Development
+<hr />
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<h2>📝 Lisensi</h2>
+<p>Proyek ini dikembangkan di bawah lisensi <a href="LICENSE">MIT License</a>.</p>
